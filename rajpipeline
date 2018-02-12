@@ -1,0 +1,1573 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'LATIN1';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: lead_attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE lead_attributes (
+    id integer NOT NULL,
+    lead_id integer NOT NULL,
+    attribute character varying(255),
+    value text,
+    type character varying(255)
+);
+
+
+ALTER TABLE lead_attributes OWNER TO postgres;
+
+--
+-- Name: lead_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE lead_attributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE lead_attributes_id_seq OWNER TO postgres;
+
+--
+-- Name: lead_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE lead_attributes_id_seq OWNED BY lead_attributes.id;
+
+
+--
+-- Name: leads; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE leads (
+    id integer NOT NULL,
+    pipeline_id integer NOT NULL,
+    campaign_id character varying(255) NOT NULL,
+    campaign_name character varying(255),
+    source character varying(255),
+    customer_id integer NOT NULL,
+    tenant_id integer,
+    assignee integer,
+    activiti_task_id integer,
+    state character varying(255),
+    version integer DEFAULT 1 NOT NULL,
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE leads OWNER TO postgres;
+
+--
+-- Name: leads_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE leads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE leads_id_seq OWNER TO postgres;
+
+--
+-- Name: leads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE leads_id_seq OWNED BY leads.id;
+
+
+--
+-- Name: leads_notes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE leads_notes (
+    id integer NOT NULL,
+    lead_id integer NOT NULL,
+    user_id integer NOT NULL,
+    note text,
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE leads_notes OWNER TO postgres;
+
+--
+-- Name: leads_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE leads_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE leads_notes_id_seq OWNER TO postgres;
+
+--
+-- Name: leads_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE leads_notes_id_seq OWNED BY leads_notes.id;
+
+
+--
+-- Name: order_attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE order_attributes (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    attribute character varying(255),
+    value text,
+    type character varying(255)
+);
+
+
+ALTER TABLE order_attributes OWNER TO postgres;
+
+--
+-- Name: order_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE order_attributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE order_attributes_id_seq OWNER TO postgres;
+
+--
+-- Name: order_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE order_attributes_id_seq OWNED BY order_attributes.id;
+
+
+--
+-- Name: order_bill; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE order_bill (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    bill json,
+    total_amount double precision NOT NULL,
+    total_items integer NOT NULL,
+    payment_gateway character varying(255),
+    charge_id character varying(255),
+    payment_mode character varying(255),
+    added_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE order_bill OWNER TO postgres;
+
+--
+-- Name: order_bill_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE order_bill_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE order_bill_id_seq OWNER TO postgres;
+
+--
+-- Name: order_bill_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE order_bill_id_seq OWNED BY order_bill.id;
+
+
+--
+-- Name: order_item_attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE order_item_attributes (
+    id integer NOT NULL,
+    item_id integer NOT NULL,
+    attribute character varying(255),
+    value text,
+    type character varying(255)
+);
+
+
+ALTER TABLE order_item_attributes OWNER TO postgres;
+
+--
+-- Name: order_item_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE order_item_attributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE order_item_attributes_id_seq OWNER TO postgres;
+
+--
+-- Name: order_item_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE order_item_attributes_id_seq OWNED BY order_item_attributes.id;
+
+
+--
+-- Name: order_items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE order_items (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    item_id character varying(255) NOT NULL,
+    price double precision,
+    price_uom character varying(255),
+    quantity double precision,
+    quantity_uom character varying(255)
+);
+
+
+ALTER TABLE order_items OWNER TO postgres;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE order_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE order_items_id_seq OWNER TO postgres;
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE order_items_id_seq OWNED BY order_items.id;
+
+
+--
+-- Name: order_notes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE order_notes (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    user_id integer NOT NULL,
+    note text,
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE order_notes OWNER TO postgres;
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE order_notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE order_notes_id_seq OWNER TO postgres;
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE order_notes_id_seq OWNED BY order_notes.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE orders (
+    id integer NOT NULL,
+    pipeline_id integer NOT NULL,
+    campaign_id character varying(255) NOT NULL,
+    campaign_name character varying(255),
+    source character varying(255) NOT NULL,
+    order_id character varying(255),
+    customer_id integer NOT NULL,
+    tenant_id integer,
+    activiti_task_id integer,
+    state character varying(255),
+    version integer DEFAULT 1 NOT NULL,
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE orders OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE orders_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
+
+
+--
+-- Name: pipeline_customers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipeline_customers (
+    id integer NOT NULL,
+    name character varying(255),
+    mobile character varying(255),
+    email character varying(255),
+    address text,
+    device_id character varying(255),
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE pipeline_customers OWNER TO postgres;
+
+--
+-- Name: pipeline_customers_attributes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipeline_customers_attributes (
+    id integer NOT NULL,
+    customer_id integer NOT NULL,
+    attribute character varying(255),
+    value text,
+    type character varying(255)
+);
+
+
+ALTER TABLE pipeline_customers_attributes OWNER TO postgres;
+
+--
+-- Name: pipeline_customers_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipeline_customers_attributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipeline_customers_attributes_id_seq OWNER TO postgres;
+
+--
+-- Name: pipeline_customers_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipeline_customers_attributes_id_seq OWNED BY pipeline_customers_attributes.id;
+
+
+--
+-- Name: pipeline_customers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipeline_customers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipeline_customers_id_seq OWNER TO postgres;
+
+--
+-- Name: pipeline_customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipeline_customers_id_seq OWNED BY pipeline_customers.id;
+
+
+--
+-- Name: pipeline_task_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipeline_task_history (
+    id integer NOT NULL,
+    type integer NOT NULL,
+    task_id integer NOT NULL,
+    activiti_task_id integer NOT NULL,
+    user_id integer NOT NULL,
+    object_type character varying(255) NOT NULL,
+    old_value text NOT NULL,
+    new_value text NOT NULL,
+    updated_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE pipeline_task_history OWNER TO postgres;
+
+--
+-- Name: pipeline_task_history_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipeline_task_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipeline_task_history_id_seq OWNER TO postgres;
+
+--
+-- Name: pipeline_task_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipeline_task_history_id_seq OWNED BY pipeline_task_history.id;
+
+
+--
+-- Name: pipeline_task_state_history; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipeline_task_state_history (
+    id integer NOT NULL,
+    pipeline_id integer NOT NULL,
+    tenant_id integer,
+    task_id integer NOT NULL,
+    activiti_task_id integer NOT NULL,
+    user_id integer NOT NULL,
+    from_state character varying(255),
+    to_state character varying(255) NOT NULL,
+    updated_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE pipeline_task_state_history OWNER TO postgres;
+
+--
+-- Name: pipeline_task_state_history_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipeline_task_state_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipeline_task_state_history_id_seq OWNER TO postgres;
+
+--
+-- Name: pipeline_task_state_history_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipeline_task_state_history_id_seq OWNED BY pipeline_task_state_history.id;
+
+
+--
+-- Name: pipeline_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipeline_type (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE pipeline_type OWNER TO postgres;
+
+--
+-- Name: pipeline_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipeline_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipeline_type_id_seq OWNER TO postgres;
+
+--
+-- Name: pipeline_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipeline_type_id_seq OWNED BY pipeline_type.id;
+
+
+--
+-- Name: pipelines; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pipelines (
+    id integer NOT NULL,
+    creator_id integer NOT NULL,
+    company_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    type integer NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    activiti_process_definition_id character varying(255) NOT NULL,
+    activiti_process_definition_key character varying(255) NOT NULL,
+    bot_email_id character varying(255),
+    start_event_variables json,
+    preview_variables json,
+    details_variables json,
+    added_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE pipelines OWNER TO postgres;
+
+--
+-- Name: pipelines_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pipelines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pipelines_id_seq OWNER TO postgres;
+
+--
+-- Name: pipelines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pipelines_id_seq OWNED BY pipelines.id;
+
+
+--
+-- Name: lead_attributes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lead_attributes ALTER COLUMN id SET DEFAULT nextval('lead_attributes_id_seq'::regclass);
+
+
+--
+-- Name: leads id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads ALTER COLUMN id SET DEFAULT nextval('leads_id_seq'::regclass);
+
+
+--
+-- Name: leads_notes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads_notes ALTER COLUMN id SET DEFAULT nextval('leads_notes_id_seq'::regclass);
+
+
+--
+-- Name: order_attributes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_attributes ALTER COLUMN id SET DEFAULT nextval('order_attributes_id_seq'::regclass);
+
+
+--
+-- Name: order_bill id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_bill ALTER COLUMN id SET DEFAULT nextval('order_bill_id_seq'::regclass);
+
+
+--
+-- Name: order_item_attributes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_item_attributes ALTER COLUMN id SET DEFAULT nextval('order_item_attributes_id_seq'::regclass);
+
+
+--
+-- Name: order_items id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_items ALTER COLUMN id SET DEFAULT nextval('order_items_id_seq'::regclass);
+
+
+--
+-- Name: order_notes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_notes ALTER COLUMN id SET DEFAULT nextval('order_notes_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
+
+
+--
+-- Name: pipeline_customers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_customers ALTER COLUMN id SET DEFAULT nextval('pipeline_customers_id_seq'::regclass);
+
+
+--
+-- Name: pipeline_customers_attributes id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_customers_attributes ALTER COLUMN id SET DEFAULT nextval('pipeline_customers_attributes_id_seq'::regclass);
+
+
+--
+-- Name: pipeline_task_history id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_history ALTER COLUMN id SET DEFAULT nextval('pipeline_task_history_id_seq'::regclass);
+
+
+--
+-- Name: pipeline_task_state_history id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_state_history ALTER COLUMN id SET DEFAULT nextval('pipeline_task_state_history_id_seq'::regclass);
+
+
+--
+-- Name: pipeline_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_type ALTER COLUMN id SET DEFAULT nextval('pipeline_type_id_seq'::regclass);
+
+
+--
+-- Name: pipelines id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipelines ALTER COLUMN id SET DEFAULT nextval('pipelines_id_seq'::regclass);
+
+
+--
+-- Data for Name: lead_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY lead_attributes (id, lead_id, attribute, value, type) FROM stdin;
+\.
+
+
+--
+-- Name: lead_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('lead_attributes_id_seq', 1, false);
+
+
+--
+-- Data for Name: leads; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY leads (id, pipeline_id, campaign_id, campaign_name, source, customer_id, tenant_id, assignee, activiti_task_id, state, version, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: leads_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('leads_id_seq', 1, false);
+
+
+--
+-- Data for Name: leads_notes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY leads_notes (id, lead_id, user_id, note, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: leads_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('leads_notes_id_seq', 1, false);
+
+
+--
+-- Data for Name: order_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY order_attributes (id, order_id, attribute, value, type) FROM stdin;
+\.
+
+
+--
+-- Name: order_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('order_attributes_id_seq', 1, false);
+
+
+--
+-- Data for Name: order_bill; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY order_bill (id, order_id, bill, total_amount, total_items, payment_gateway, charge_id, payment_mode, added_on, updated_on) FROM stdin;
+\.
+
+
+--
+-- Name: order_bill_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('order_bill_id_seq', 1, false);
+
+
+--
+-- Data for Name: order_item_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY order_item_attributes (id, item_id, attribute, value, type) FROM stdin;
+\.
+
+
+--
+-- Name: order_item_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('order_item_attributes_id_seq', 1, false);
+
+
+--
+-- Data for Name: order_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY order_items (id, order_id, item_id, price, price_uom, quantity, quantity_uom) FROM stdin;
+\.
+
+
+--
+-- Name: order_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('order_items_id_seq', 1, false);
+
+
+--
+-- Data for Name: order_notes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY order_notes (id, order_id, user_id, note, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: order_notes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('order_notes_id_seq', 1, false);
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY orders (id, pipeline_id, campaign_id, campaign_name, source, order_id, customer_id, tenant_id, activiti_task_id, state, version, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('orders_id_seq', 1, false);
+
+
+--
+-- Data for Name: pipeline_customers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipeline_customers (id, name, mobile, email, address, device_id, added_on) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pipeline_customers_attributes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipeline_customers_attributes (id, customer_id, attribute, value, type) FROM stdin;
+\.
+
+
+--
+-- Name: pipeline_customers_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipeline_customers_attributes_id_seq', 1, false);
+
+
+--
+-- Name: pipeline_customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipeline_customers_id_seq', 1, false);
+
+
+--
+-- Data for Name: pipeline_task_history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipeline_task_history (id, type, task_id, activiti_task_id, user_id, object_type, old_value, new_value, updated_on) FROM stdin;
+\.
+
+
+--
+-- Name: pipeline_task_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipeline_task_history_id_seq', 1, false);
+
+
+--
+-- Data for Name: pipeline_task_state_history; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipeline_task_state_history (id, pipeline_id, tenant_id, task_id, activiti_task_id, user_id, from_state, to_state, updated_on) FROM stdin;
+\.
+
+
+--
+-- Name: pipeline_task_state_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipeline_task_state_history_id_seq', 1, false);
+
+
+--
+-- Data for Name: pipeline_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipeline_type (id, name, is_active, added_on) FROM stdin;
+1	Sales	t	2016-11-04 06:31:04.135804
+2	Marketing	t	2016-11-04 06:31:04.135773
+\.
+
+
+--
+-- Name: pipeline_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipeline_type_id_seq', 2, true);
+
+
+--
+-- Data for Name: pipelines; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pipelines (id, creator_id, company_id, name, type, is_active, activiti_process_definition_id, activiti_process_definition_key, bot_email_id, start_event_variables, preview_variables, details_variables, added_on, updated_on) FROM stdin;
+1	1	1	pipeline1	2	t	process:1:37660	process	cloudsupport@prostem.org	[{"name": "pipeline", "attribute": "pipeline_id", "table_name": "Leads", "table_type": "TABLE", "table": {"type": "TABLE", "table_name": "Leads", "columns": ["pipeline_id", "campaign_id", "source", "state", "version"]}, "id": 7687660137816359000}]	[]	[]	2017-12-20 10:42:46.104819	2017-12-20 10:42:46.104868
+2	1	1	Pipeline2	1	t	LeadsAlpha:2:25095	LeadsAlpha	admin@abc.com	[{"name": "pipel", "attribute": "name", "table_name": "Customers", "table_type": "TABLE", "table": {"type": "TABLE", "table_name": "Customers", "columns": ["name", "mobile", "email", "address"]}, "id": 4706330765622524000}]	[]	[]	2017-12-20 12:51:07.070045	2017-12-20 12:51:07.070088
+\.
+
+
+--
+-- Name: pipelines_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pipelines_id_seq', 2, true);
+
+
+--
+-- Name: lead_attributes lead_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lead_attributes
+    ADD CONSTRAINT lead_attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: leads_notes leads_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads_notes
+    ADD CONSTRAINT leads_notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: leads leads_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads
+    ADD CONSTRAINT leads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_attributes order_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_attributes
+    ADD CONSTRAINT order_attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_bill order_bill_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_bill
+    ADD CONSTRAINT order_bill_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_item_attributes order_item_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_item_attributes
+    ADD CONSTRAINT order_item_attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_items order_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_items
+    ADD CONSTRAINT order_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_notes order_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_notes
+    ADD CONSTRAINT order_notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipeline_customers_attributes pipeline_customers_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_customers_attributes
+    ADD CONSTRAINT pipeline_customers_attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipeline_customers pipeline_customers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_customers
+    ADD CONSTRAINT pipeline_customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipeline_task_history pipeline_task_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_history
+    ADD CONSTRAINT pipeline_task_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipeline_task_state_history pipeline_task_state_history_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_state_history
+    ADD CONSTRAINT pipeline_task_state_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipeline_type pipeline_type_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_type
+    ADD CONSTRAINT pipeline_type_name_key UNIQUE (name);
+
+
+--
+-- Name: pipeline_type pipeline_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_type
+    ADD CONSTRAINT pipeline_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pipelines pipelines_company_id_name_activiti_process_definition_id_ac_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipelines
+    ADD CONSTRAINT pipelines_company_id_name_activiti_process_definition_id_ac_key UNIQUE (company_id, name, activiti_process_definition_id, activiti_process_definition_key);
+
+
+--
+-- Name: pipelines pipelines_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipelines
+    ADD CONSTRAINT pipelines_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ix_lead_attributes_lead_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_lead_attributes_lead_id ON lead_attributes USING btree (lead_id);
+
+
+--
+-- Name: ix_leads_activiti_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_activiti_task_id ON leads USING btree (activiti_task_id);
+
+
+--
+-- Name: ix_leads_assignee; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_assignee ON leads USING btree (assignee);
+
+
+--
+-- Name: ix_leads_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_campaign_id ON leads USING btree (campaign_id);
+
+
+--
+-- Name: ix_leads_customer_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_customer_id ON leads USING btree (customer_id);
+
+
+--
+-- Name: ix_leads_notes_lead_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_notes_lead_id ON leads_notes USING btree (lead_id);
+
+
+--
+-- Name: ix_leads_notes_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_notes_user_id ON leads_notes USING btree (user_id);
+
+
+--
+-- Name: ix_leads_pipeline_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_pipeline_id ON leads USING btree (pipeline_id);
+
+
+--
+-- Name: ix_leads_source; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_source ON leads USING btree (source);
+
+
+--
+-- Name: ix_leads_state; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_state ON leads USING btree (state);
+
+
+--
+-- Name: ix_leads_tenant_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_tenant_id ON leads USING btree (tenant_id);
+
+
+--
+-- Name: ix_leads_version; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_leads_version ON leads USING btree (version);
+
+
+--
+-- Name: ix_order_attributes_order_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_attributes_order_id ON order_attributes USING btree (order_id);
+
+
+--
+-- Name: ix_order_bill_order_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_bill_order_id ON order_bill USING btree (order_id);
+
+
+--
+-- Name: ix_order_item_attributes_item_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_item_attributes_item_id ON order_item_attributes USING btree (item_id);
+
+
+--
+-- Name: ix_order_items_item_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_items_item_id ON order_items USING btree (item_id);
+
+
+--
+-- Name: ix_order_items_order_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_items_order_id ON order_items USING btree (order_id);
+
+
+--
+-- Name: ix_order_notes_order_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_notes_order_id ON order_notes USING btree (order_id);
+
+
+--
+-- Name: ix_order_notes_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_order_notes_user_id ON order_notes USING btree (user_id);
+
+
+--
+-- Name: ix_orders_activiti_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_activiti_task_id ON orders USING btree (activiti_task_id);
+
+
+--
+-- Name: ix_orders_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_campaign_id ON orders USING btree (campaign_id);
+
+
+--
+-- Name: ix_orders_customer_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_customer_id ON orders USING btree (customer_id);
+
+
+--
+-- Name: ix_orders_order_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_order_id ON orders USING btree (order_id);
+
+
+--
+-- Name: ix_orders_pipeline_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_pipeline_id ON orders USING btree (pipeline_id);
+
+
+--
+-- Name: ix_orders_source; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_source ON orders USING btree (source);
+
+
+--
+-- Name: ix_orders_state; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_state ON orders USING btree (state);
+
+
+--
+-- Name: ix_orders_tenant_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_tenant_id ON orders USING btree (tenant_id);
+
+
+--
+-- Name: ix_orders_version; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_orders_version ON orders USING btree (version);
+
+
+--
+-- Name: ix_pipeline_customers_attributes_customer_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_customers_attributes_customer_id ON pipeline_customers_attributes USING btree (customer_id);
+
+
+--
+-- Name: ix_pipeline_task_history_activiti_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_activiti_task_id ON pipeline_task_history USING btree (activiti_task_id);
+
+
+--
+-- Name: ix_pipeline_task_history_new_value; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_new_value ON pipeline_task_history USING btree (new_value);
+
+
+--
+-- Name: ix_pipeline_task_history_object_type; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_object_type ON pipeline_task_history USING btree (object_type);
+
+
+--
+-- Name: ix_pipeline_task_history_old_value; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_old_value ON pipeline_task_history USING btree (old_value);
+
+
+--
+-- Name: ix_pipeline_task_history_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_task_id ON pipeline_task_history USING btree (task_id);
+
+
+--
+-- Name: ix_pipeline_task_history_type; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_type ON pipeline_task_history USING btree (type);
+
+
+--
+-- Name: ix_pipeline_task_history_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_history_user_id ON pipeline_task_history USING btree (user_id);
+
+
+--
+-- Name: ix_pipeline_task_state_history_activiti_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_activiti_task_id ON pipeline_task_state_history USING btree (activiti_task_id);
+
+
+--
+-- Name: ix_pipeline_task_state_history_from_state; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_from_state ON pipeline_task_state_history USING btree (from_state);
+
+
+--
+-- Name: ix_pipeline_task_state_history_pipeline_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_pipeline_id ON pipeline_task_state_history USING btree (pipeline_id);
+
+
+--
+-- Name: ix_pipeline_task_state_history_task_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_task_id ON pipeline_task_state_history USING btree (task_id);
+
+
+--
+-- Name: ix_pipeline_task_state_history_tenant_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_tenant_id ON pipeline_task_state_history USING btree (tenant_id);
+
+
+--
+-- Name: ix_pipeline_task_state_history_to_state; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_to_state ON pipeline_task_state_history USING btree (to_state);
+
+
+--
+-- Name: ix_pipeline_task_state_history_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_task_state_history_user_id ON pipeline_task_state_history USING btree (user_id);
+
+
+--
+-- Name: ix_pipeline_type_is_active; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_type_is_active ON pipeline_type USING btree (is_active);
+
+
+--
+-- Name: ix_pipeline_type_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipeline_type_name ON pipeline_type USING btree (name);
+
+
+--
+-- Name: ix_pipelines_activiti_process_definition_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_activiti_process_definition_id ON pipelines USING btree (activiti_process_definition_id);
+
+
+--
+-- Name: ix_pipelines_activiti_process_definition_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_activiti_process_definition_key ON pipelines USING btree (activiti_process_definition_key);
+
+
+--
+-- Name: ix_pipelines_company_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_company_id ON pipelines USING btree (company_id);
+
+
+--
+-- Name: ix_pipelines_creator_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_creator_id ON pipelines USING btree (creator_id);
+
+
+--
+-- Name: ix_pipelines_is_active; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_is_active ON pipelines USING btree (is_active);
+
+
+--
+-- Name: ix_pipelines_name; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_name ON pipelines USING btree (name);
+
+
+--
+-- Name: ix_pipelines_type; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_pipelines_type ON pipelines USING btree (type);
+
+
+--
+-- Name: lead_attributes lead_attributes_lead_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY lead_attributes
+    ADD CONSTRAINT lead_attributes_lead_id_fkey FOREIGN KEY (lead_id) REFERENCES leads(id);
+
+
+--
+-- Name: leads leads_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads
+    ADD CONSTRAINT leads_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES pipeline_customers(id);
+
+
+--
+-- Name: leads_notes leads_notes_lead_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads_notes
+    ADD CONSTRAINT leads_notes_lead_id_fkey FOREIGN KEY (lead_id) REFERENCES leads(id);
+
+
+--
+-- Name: leads leads_pipeline_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY leads
+    ADD CONSTRAINT leads_pipeline_id_fkey FOREIGN KEY (pipeline_id) REFERENCES pipelines(id);
+
+
+--
+-- Name: order_attributes order_attributes_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_attributes
+    ADD CONSTRAINT order_attributes_order_id_fkey FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: order_bill order_bill_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_bill
+    ADD CONSTRAINT order_bill_order_id_fkey FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: order_item_attributes order_item_attributes_item_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_item_attributes
+    ADD CONSTRAINT order_item_attributes_item_id_fkey FOREIGN KEY (item_id) REFERENCES order_items(id);
+
+
+--
+-- Name: order_items order_items_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_items
+    ADD CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: order_notes order_notes_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY order_notes
+    ADD CONSTRAINT order_notes_order_id_fkey FOREIGN KEY (order_id) REFERENCES orders(id);
+
+
+--
+-- Name: orders orders_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES pipeline_customers(id);
+
+
+--
+-- Name: orders orders_pipeline_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pipeline_id_fkey FOREIGN KEY (pipeline_id) REFERENCES pipelines(id);
+
+
+--
+-- Name: pipeline_customers_attributes pipeline_customers_attributes_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_customers_attributes
+    ADD CONSTRAINT pipeline_customers_attributes_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES pipeline_customers(id);
+
+
+--
+-- Name: pipeline_task_history pipeline_task_history_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_history
+    ADD CONSTRAINT pipeline_task_history_type_fkey FOREIGN KEY (type) REFERENCES pipeline_type(id);
+
+
+--
+-- Name: pipeline_task_state_history pipeline_task_state_history_pipeline_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipeline_task_state_history
+    ADD CONSTRAINT pipeline_task_state_history_pipeline_id_fkey FOREIGN KEY (pipeline_id) REFERENCES pipelines(id);
+
+
+--
+-- Name: pipelines pipelines_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pipelines
+    ADD CONSTRAINT pipelines_type_fkey FOREIGN KEY (type) REFERENCES pipeline_type(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

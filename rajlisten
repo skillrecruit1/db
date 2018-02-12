@@ -1,0 +1,1769 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'LATIN1';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: _campaign_post_retweets; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE _campaign_post_retweets (
+    id integer NOT NULL,
+    campaign_id integer NOT NULL,
+    campaign_channel_id integer NOT NULL,
+    tweet_id character varying(256) NOT NULL,
+    screen_name character varying(256) NOT NULL,
+    followers integer,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE _campaign_post_retweets OWNER TO postgres;
+
+--
+-- Name: _campaign_post_retweets_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE _campaign_post_retweets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE _campaign_post_retweets_id_seq OWNER TO postgres;
+
+--
+-- Name: _campaign_post_retweets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE _campaign_post_retweets_id_seq OWNED BY _campaign_post_retweets.id;
+
+
+--
+-- Name: _gupshup_webhook; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE _gupshup_webhook (
+    id integer NOT NULL,
+    external_id character varying(256) NOT NULL,
+    delivered_at bigint NOT NULL,
+    phone_no character varying(256),
+    status character varying(256),
+    cause character varying(256),
+    added_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE _gupshup_webhook OWNER TO postgres;
+
+--
+-- Name: _gupshup_webhook_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE _gupshup_webhook_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE _gupshup_webhook_id_seq OWNER TO postgres;
+
+--
+-- Name: _gupshup_webhook_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE _gupshup_webhook_id_seq OWNED BY _gupshup_webhook.id;
+
+
+--
+-- Name: _mandrill_webhook_message_event; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE _mandrill_webhook_message_event (
+    id integer NOT NULL,
+    post_id character varying(256) NOT NULL,
+    _id character varying(256) NOT NULL,
+    event_on integer,
+    event character varying(256),
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE _mandrill_webhook_message_event OWNER TO postgres;
+
+--
+-- Name: _mandrill_webhook_message_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE _mandrill_webhook_message_event_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE _mandrill_webhook_message_event_id_seq OWNER TO postgres;
+
+--
+-- Name: _mandrill_webhook_message_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE _mandrill_webhook_message_event_id_seq OWNED BY _mandrill_webhook_message_event.id;
+
+
+--
+-- Name: alerts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE alerts (
+    id integer NOT NULL,
+    listen_id integer NOT NULL,
+    label character varying(256) NOT NULL,
+    alert_id integer,
+    is_active boolean NOT NULL,
+    alert_info text,
+    added_on timestamp without time zone NOT NULL,
+    updated_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE alerts OWNER TO postgres;
+
+--
+-- Name: alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE alerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE alerts_id_seq OWNER TO postgres;
+
+--
+-- Name: alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE alerts_id_seq OWNED BY alerts.id;
+
+
+--
+-- Name: custom_crawler_engines; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE custom_crawler_engines (
+    id integer NOT NULL,
+    domain character varying(256) NOT NULL,
+    is_active boolean NOT NULL,
+    created_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE custom_crawler_engines OWNER TO postgres;
+
+--
+-- Name: custom_crawler_engines_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE custom_crawler_engines_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE custom_crawler_engines_id_seq OWNER TO postgres;
+
+--
+-- Name: custom_crawler_engines_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE custom_crawler_engines_id_seq OWNED BY custom_crawler_engines.id;
+
+
+--
+-- Name: custom_crawlers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE custom_crawlers (
+    id integer NOT NULL,
+    crawler_type_id integer NOT NULL,
+    url text NOT NULL,
+    is_active boolean NOT NULL,
+    created_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE custom_crawlers OWNER TO postgres;
+
+--
+-- Name: custom_crawlers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE custom_crawlers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE custom_crawlers_id_seq OWNER TO postgres;
+
+--
+-- Name: custom_crawlers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE custom_crawlers_id_seq OWNED BY custom_crawlers.id;
+
+
+--
+-- Name: email_stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE email_stats (
+    id integer NOT NULL,
+    user_id integer,
+    campaign_id integer,
+    channel_id integer,
+    post_id character varying,
+    reach integer,
+    sent integer,
+    hard_bounce integer,
+    soft_bounce integer,
+    deferral integer,
+    spam integer,
+    unsub integer,
+    open integer,
+    click integer,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE email_stats OWNER TO postgres;
+
+--
+-- Name: email_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE email_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE email_stats_id_seq OWNER TO postgres;
+
+--
+-- Name: email_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE email_stats_id_seq OWNED BY email_stats.id;
+
+
+--
+-- Name: facebook_stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE facebook_stats (
+    id integer NOT NULL,
+    user_id integer,
+    campaign_id integer,
+    channel_id integer,
+    post_id character varying,
+    reach integer,
+    likes_on_post integer,
+    comments_on_post integer,
+    shares_on_post integer,
+    likes_on_shares integer,
+    comments_on_shares integer,
+    shares_on_shares integer,
+    post_clicks integer,
+    photo_views integer,
+    link_clicks integer,
+    other_clicks integer,
+    hide_post integer,
+    hide_all_posts integer,
+    report_as_spam integer,
+    unlike_page integer,
+    post_message character varying,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE facebook_stats OWNER TO postgres;
+
+--
+-- Name: facebook_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE facebook_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE facebook_stats_id_seq OWNER TO postgres;
+
+--
+-- Name: facebook_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE facebook_stats_id_seq OWNED BY facebook_stats.id;
+
+
+--
+-- Name: keywords; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE keywords (
+    id integer NOT NULL,
+    keyword character varying(256) NOT NULL,
+    is_active boolean NOT NULL,
+    updated_on timestamp without time zone
+);
+
+
+ALTER TABLE keywords OWNER TO postgres;
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE keywords_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE keywords_id_seq OWNER TO postgres;
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE keywords_id_seq OWNED BY keywords.id;
+
+
+--
+-- Name: linkedin_stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE linkedin_stats (
+    id integer NOT NULL,
+    user_id integer,
+    campaign_id integer,
+    channel_id integer,
+    update_key character varying,
+    reach integer,
+    likes integer,
+    impressions integer,
+    clicks integer,
+    engagement double precision,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE linkedin_stats OWNER TO postgres;
+
+--
+-- Name: linkedin_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE linkedin_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE linkedin_stats_id_seq OWNER TO postgres;
+
+--
+-- Name: linkedin_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE linkedin_stats_id_seq OWNED BY linkedin_stats.id;
+
+
+--
+-- Name: listen_details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE listen_details (
+    id integer NOT NULL,
+    listen_id integer NOT NULL,
+    listen_type integer NOT NULL,
+    listen_type_id integer NOT NULL,
+    added_on timestamp without time zone
+);
+
+
+ALTER TABLE listen_details OWNER TO postgres;
+
+--
+-- Name: listen_details_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE listen_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE listen_details_id_seq OWNER TO postgres;
+
+--
+-- Name: listen_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE listen_details_id_seq OWNED BY listen_details.id;
+
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE messages (
+    id integer NOT NULL,
+    keyword_id integer,
+    crawler_id integer,
+    message_id character varying(256) NOT NULL,
+    title text NOT NULL,
+    source character varying(256) NOT NULL,
+    published_on timestamp without time zone NOT NULL,
+    url text NOT NULL,
+    influence integer NOT NULL,
+    sentiment integer NOT NULL,
+    custom_sentiment boolean DEFAULT false NOT NULL,
+    content text NOT NULL,
+    location character varying(50)
+);
+
+
+ALTER TABLE messages OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE messages_id_seq OWNER TO postgres;
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
+
+
+--
+-- Name: post_relationship; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE post_relationship (
+    id integer NOT NULL,
+    parent_id character varying(256) NOT NULL,
+    message_id character varying(256) NOT NULL
+);
+
+
+ALTER TABLE post_relationship OWNER TO postgres;
+
+--
+-- Name: post_relationship_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE post_relationship_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE post_relationship_id_seq OWNER TO postgres;
+
+--
+-- Name: post_relationship_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE post_relationship_id_seq OWNED BY post_relationship.id;
+
+
+--
+-- Name: post_reply; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE post_reply (
+    id integer NOT NULL,
+    post_id character varying(256) NOT NULL,
+    post_message text,
+    url text NOT NULL,
+    posted_on timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE post_reply OWNER TO postgres;
+
+--
+-- Name: post_reply_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE post_reply_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE post_reply_id_seq OWNER TO postgres;
+
+--
+-- Name: post_reply_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE post_reply_id_seq OWNED BY post_reply.id;
+
+
+--
+-- Name: posts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE posts (
+    id integer NOT NULL,
+    social_ac_id integer NOT NULL,
+    message_id character varying(256) NOT NULL,
+    message_type character varying(256) NOT NULL,
+    profile_image_url text,
+    screen_name character varying(256),
+    reply_id integer,
+    title text NOT NULL,
+    source character varying(256) NOT NULL,
+    url text NOT NULL,
+    influence integer NOT NULL,
+    sentiment character varying(256) NOT NULL,
+    content text NOT NULL,
+    post_img text,
+    user_info text NOT NULL,
+    liked boolean NOT NULL,
+    location character varying(255),
+    latitude double precision,
+    longitude double precision,
+    comment boolean NOT NULL,
+    published_on timestamp without time zone NOT NULL,
+    synced_on timestamp without time zone NOT NULL,
+    post_thread_updated_on timestamp without time zone,
+    user_id integer,
+    num_of_comments integer
+);
+
+
+ALTER TABLE posts OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE posts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE posts_id_seq OWNER TO postgres;
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE posts_id_seq OWNED BY posts.id;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE sessions (
+    id integer NOT NULL,
+    session_id character varying(255) NOT NULL,
+    data text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE sessions OWNER TO postgres;
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE sessions_id_seq OWNER TO postgres;
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE sessions_id_seq OWNED BY sessions.id;
+
+
+--
+-- Name: sms_stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE sms_stats (
+    id integer NOT NULL,
+    user_id integer,
+    campaign_id integer,
+    channel_id integer,
+    external_id character varying,
+    reach integer,
+    success integer,
+    fail integer,
+    dnd_fail integer,
+    absent_subscriber integer,
+    unknown_subscriber integer,
+    other integer,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE sms_stats OWNER TO postgres;
+
+--
+-- Name: sms_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE sms_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE sms_stats_id_seq OWNER TO postgres;
+
+--
+-- Name: sms_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE sms_stats_id_seq OWNED BY sms_stats.id;
+
+
+--
+-- Name: social_channel_followers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE social_channel_followers (
+    id integer NOT NULL,
+    user_id integer,
+    social_id character varying,
+    social_channel character varying,
+    followers integer,
+    name character varying,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE social_channel_followers OWNER TO postgres;
+
+--
+-- Name: social_channel_followers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE social_channel_followers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE social_channel_followers_id_seq OWNER TO postgres;
+
+--
+-- Name: social_channel_followers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE social_channel_followers_id_seq OWNED BY social_channel_followers.id;
+
+
+--
+-- Name: twitter_stats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE twitter_stats (
+    id integer NOT NULL,
+    user_id integer,
+    campaign_id integer,
+    channel_id integer,
+    tweet_id character varying,
+    reach integer,
+    retweet_count integer,
+    favorite_count integer,
+    inserted_on timestamp without time zone
+);
+
+
+ALTER TABLE twitter_stats OWNER TO postgres;
+
+--
+-- Name: twitter_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE twitter_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE twitter_stats_id_seq OWNER TO postgres;
+
+--
+-- Name: twitter_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE twitter_stats_id_seq OWNED BY twitter_stats.id;
+
+
+--
+-- Name: user_listens; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE user_listens (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    label character varying(256) NOT NULL,
+    created_on timestamp without time zone
+);
+
+
+ALTER TABLE user_listens OWNER TO postgres;
+
+--
+-- Name: user_listens_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_listens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE user_listens_id_seq OWNER TO postgres;
+
+--
+-- Name: user_listens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_listens_id_seq OWNED BY user_listens.id;
+
+
+--
+-- Name: user_social_channels; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE user_social_channels (
+    id integer NOT NULL,
+    channel character varying(256),
+    social_id text,
+    social_token text,
+    email character varying(256),
+    name text,
+    profile_image text,
+    user_id integer,
+    active boolean,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    connections integer,
+    valid_oauth boolean
+);
+
+
+ALTER TABLE user_social_channels OWNER TO postgres;
+
+--
+-- Name: user_social_channels_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_social_channels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE user_social_channels_id_seq OWNER TO postgres;
+
+--
+-- Name: user_social_channels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_social_channels_id_seq OWNED BY user_social_channels.id;
+
+
+--
+-- Name: _campaign_post_retweets id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _campaign_post_retweets ALTER COLUMN id SET DEFAULT nextval('_campaign_post_retweets_id_seq'::regclass);
+
+
+--
+-- Name: _gupshup_webhook id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _gupshup_webhook ALTER COLUMN id SET DEFAULT nextval('_gupshup_webhook_id_seq'::regclass);
+
+
+--
+-- Name: _mandrill_webhook_message_event id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _mandrill_webhook_message_event ALTER COLUMN id SET DEFAULT nextval('_mandrill_webhook_message_event_id_seq'::regclass);
+
+
+--
+-- Name: alerts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY alerts ALTER COLUMN id SET DEFAULT nextval('alerts_id_seq'::regclass);
+
+
+--
+-- Name: custom_crawler_engines id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY custom_crawler_engines ALTER COLUMN id SET DEFAULT nextval('custom_crawler_engines_id_seq'::regclass);
+
+
+--
+-- Name: custom_crawlers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY custom_crawlers ALTER COLUMN id SET DEFAULT nextval('custom_crawlers_id_seq'::regclass);
+
+
+--
+-- Name: email_stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY email_stats ALTER COLUMN id SET DEFAULT nextval('email_stats_id_seq'::regclass);
+
+
+--
+-- Name: facebook_stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY facebook_stats ALTER COLUMN id SET DEFAULT nextval('facebook_stats_id_seq'::regclass);
+
+
+--
+-- Name: keywords id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY keywords ALTER COLUMN id SET DEFAULT nextval('keywords_id_seq'::regclass);
+
+
+--
+-- Name: linkedin_stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY linkedin_stats ALTER COLUMN id SET DEFAULT nextval('linkedin_stats_id_seq'::regclass);
+
+
+--
+-- Name: listen_details id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY listen_details ALTER COLUMN id SET DEFAULT nextval('listen_details_id_seq'::regclass);
+
+
+--
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
+
+
+--
+-- Name: post_relationship id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY post_relationship ALTER COLUMN id SET DEFAULT nextval('post_relationship_id_seq'::regclass);
+
+
+--
+-- Name: post_reply id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY post_reply ALTER COLUMN id SET DEFAULT nextval('post_reply_id_seq'::regclass);
+
+
+--
+-- Name: posts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY posts ALTER COLUMN id SET DEFAULT nextval('posts_id_seq'::regclass);
+
+
+--
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sessions ALTER COLUMN id SET DEFAULT nextval('sessions_id_seq'::regclass);
+
+
+--
+-- Name: sms_stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sms_stats ALTER COLUMN id SET DEFAULT nextval('sms_stats_id_seq'::regclass);
+
+
+--
+-- Name: social_channel_followers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_channel_followers ALTER COLUMN id SET DEFAULT nextval('social_channel_followers_id_seq'::regclass);
+
+
+--
+-- Name: twitter_stats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY twitter_stats ALTER COLUMN id SET DEFAULT nextval('twitter_stats_id_seq'::regclass);
+
+
+--
+-- Name: user_listens id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_listens ALTER COLUMN id SET DEFAULT nextval('user_listens_id_seq'::regclass);
+
+
+--
+-- Name: user_social_channels id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_social_channels ALTER COLUMN id SET DEFAULT nextval('user_social_channels_id_seq'::regclass);
+
+
+--
+-- Data for Name: _campaign_post_retweets; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY _campaign_post_retweets (id, campaign_id, campaign_channel_id, tweet_id, screen_name, followers, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: _campaign_post_retweets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('_campaign_post_retweets_id_seq', 1, false);
+
+
+--
+-- Data for Name: _gupshup_webhook; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY _gupshup_webhook (id, external_id, delivered_at, phone_no, status, cause, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: _gupshup_webhook_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('_gupshup_webhook_id_seq', 1, false);
+
+
+--
+-- Data for Name: _mandrill_webhook_message_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY _mandrill_webhook_message_event (id, post_id, _id, event_on, event, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: _mandrill_webhook_message_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('_mandrill_webhook_message_event_id_seq', 1, false);
+
+
+--
+-- Data for Name: alerts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY alerts (id, listen_id, label, alert_id, is_active, alert_info, added_on, updated_on) FROM stdin;
+16	1	test	\N	f	{"alertType": "email", "recipients": {"email_ids": "", "mobile_numbers": "", "webhook_url": ""}, "sentiment": ["all"], "influence": [-1, 100], "messages": {"email_subject": "", "email_message": "", "webhook_data": "", "sms_message": ""}, "sources": ["all"], "listen_id": "1", "frequency": 24}	2017-12-22 09:06:46.590938	2017-12-22 09:06:46.590971
+\.
+
+
+--
+-- Name: alerts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('alerts_id_seq', 23, true);
+
+
+--
+-- Data for Name: custom_crawler_engines; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY custom_crawler_engines (id, domain, is_active, created_on) FROM stdin;
+\.
+
+
+--
+-- Name: custom_crawler_engines_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('custom_crawler_engines_id_seq', 1, false);
+
+
+--
+-- Data for Name: custom_crawlers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY custom_crawlers (id, crawler_type_id, url, is_active, created_on) FROM stdin;
+\.
+
+
+--
+-- Name: custom_crawlers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('custom_crawlers_id_seq', 1, false);
+
+
+--
+-- Data for Name: email_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY email_stats (id, user_id, campaign_id, channel_id, post_id, reach, sent, hard_bounce, soft_bounce, deferral, spam, unsub, open, click, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: email_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('email_stats_id_seq', 1, false);
+
+
+--
+-- Data for Name: facebook_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY facebook_stats (id, user_id, campaign_id, channel_id, post_id, reach, likes_on_post, comments_on_post, shares_on_post, likes_on_shares, comments_on_shares, shares_on_shares, post_clicks, photo_views, link_clicks, other_clicks, hide_post, hide_all_posts, report_as_spam, unlike_page, post_message, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: facebook_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('facebook_stats_id_seq', 1, false);
+
+
+--
+-- Data for Name: keywords; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY keywords (id, keyword, is_active, updated_on) FROM stdin;
+\.
+
+
+--
+-- Name: keywords_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('keywords_id_seq', 1, false);
+
+
+--
+-- Data for Name: linkedin_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY linkedin_stats (id, user_id, campaign_id, channel_id, update_key, reach, likes, impressions, clicks, engagement, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: linkedin_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('linkedin_stats_id_seq', 1, false);
+
+
+--
+-- Data for Name: listen_details; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY listen_details (id, listen_id, listen_type, listen_type_id, added_on) FROM stdin;
+\.
+
+
+--
+-- Name: listen_details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('listen_details_id_seq', 1, false);
+
+
+--
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY messages (id, keyword_id, crawler_id, message_id, title, source, published_on, url, influence, sentiment, custom_sentiment, content, location) FROM stdin;
+\.
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('messages_id_seq', 1, false);
+
+
+--
+-- Data for Name: post_relationship; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY post_relationship (id, parent_id, message_id) FROM stdin;
+\.
+
+
+--
+-- Name: post_relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('post_relationship_id_seq', 1, false);
+
+
+--
+-- Data for Name: post_reply; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY post_reply (id, post_id, post_message, url, posted_on) FROM stdin;
+\.
+
+
+--
+-- Name: post_reply_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('post_reply_id_seq', 1, false);
+
+
+--
+-- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY posts (id, social_ac_id, message_id, message_type, profile_image_url, screen_name, reply_id, title, source, url, influence, sentiment, content, post_img, user_info, liked, location, latitude, longitude, comment, published_on, synced_on, post_thread_updated_on, user_id, num_of_comments) FROM stdin;
+1	3	32539269	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/416/d89baad44f22d5b53cf8cb723fce0416.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Srikanth Reddy Regadi	\N	Place is good as such but best in night,	zomato	https://www.zomato.com/review/32539269	-1	2	Place is good as such but best in night,better avoid this place if planning for lunch.  Non veg staters are what to look out for. Bar attend...		{"foodie_color": "ffd35d", "foodie_level_num": 2, "name": "Srikanth Reddy Regadi", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/416/d89baad44f22d5b53cf8cb723fce0416.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "zomato_handle": "srikanth_regadi", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/416/d89baad44f22d5b53cf8cb723fce0416.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/srikanth_regadi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/1579899", "profile_url": "https://www.zomato.com/cs/srikanth_regadi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Foodie"}	f	\N	\N	\N	f	2017-11-25 16:08:15	2018-02-05 11:00:09.32533	2017-11-25 16:08:15	2	0
+2	3	32044111	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/d35/75d431b9c25838624b233f1a0b6a7d35.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Manoj Karthik	\N	Infinity famous for its fast serving  i 	zomato	https://www.zomato.com/review/32044111	-1	2	Infinity famous for its fast serving  i ordered bbq fish and chicken which are tasteful. The pleasent environment with live singer i enjoyed...		{"foodie_color": "ffd35d", "foodie_level_num": 3, "name": "Manoj Karthik", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/d35/75d431b9c25838624b233f1a0b6a7d35.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/d35/75d431b9c25838624b233f1a0b6a7d35.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/users/manoj-karthik-46950586?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/46950586", "profile_url": "https://www.zomato.com/cs/users/manoj-karthik-46950586?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Foodie"}	f	\N	\N	\N	f	2017-10-13 03:13:22	2018-02-05 11:00:09.406342	2017-10-13 03:13:22	2	0
+3	3	30457092	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/5a1/42f27eee7b42fa1e7b7fd714ddcf65a1.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Madhav	\N	Okay so this place is one of the best pl	zomato	https://www.zomato.com/review/30457092	-1	2	Okay so this place is one of the best place in the city . Where you can just go out and sit and have good quality drinks with good food as w...		{"foodie_color": "ffae4f", "foodie_level_num": 5, "name": "Madhav", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/5a1/42f27eee7b42fa1e7b7fd714ddcf65a1.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "zomato_handle": "Madhav2090", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/5a1/42f27eee7b42fa1e7b7fd714ddcf65a1.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/Madhav2090?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/2047986", "profile_url": "https://www.zomato.com/cs/Madhav2090?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Big Foodie"}	f	\N	\N	\N	f	2017-05-23 01:59:30	2018-02-05 11:00:09.451238	2017-05-23 01:59:30	2	0
+4	3	30010202	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/611/427ea9b3fdbfb866816a80be90c7e611.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Sabyasachi Raychaudhuri  (Foodaholix.in)	\N	One of the reasons that I love staying a	zomato	https://www.zomato.com/review/30010202	-1	2	One of the reasons that I love staying at Novotel Varun Beach in Vizag is the superb view of the seafront that it offers. And best of that v...		{"foodie_color": "e95151", "foodie_level_num": 13, "name": "Sabyasachi Raychaudhuri  (Foodaholix.in)", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/611/427ea9b3fdbfb866816a80be90c7e611.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "zomato_handle": "sabyasachi", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/611/427ea9b3fdbfb866816a80be90c7e611.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/sabyasachi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/260065", "profile_url": "https://www.zomato.com/cs/sabyasachi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Connoisseur"}	f	\N	\N	\N	f	2017-04-10 19:00:35	2018-02-05 11:00:09.509348	2017-04-10 19:00:35	2	0
+5	3	29986376	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/7a0/77e068fe7d473463432704592f0ac7a0.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Rakesh Sharma	\N	No one kept even a glass of water when I	zomato	https://www.zomato.com/review/29986376	-1	2	No one kept even a glass of water when I sat. I was directly given the menu. After finishing my beverage, wanted to order a second but there...		{"foodie_color": "ffd35d", "foodie_level_num": 2, "name": "Rakesh Sharma", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/7a0/77e068fe7d473463432704592f0ac7a0.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/7a0/77e068fe7d473463432704592f0ac7a0.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/users/rakesh-sharma-39797471?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/39797471", "profile_url": "https://www.zomato.com/cs/users/rakesh-sharma-39797471?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Foodie"}	f	\N	\N	\N	f	2017-04-08 17:28:38	2018-02-05 11:00:09.545246	2017-04-08 17:28:38	2	0
+6	5	32955233	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/b48/8e13abfbb4bd8625f66f9908ba613b48.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Mukul Moholkar	\N	This is one of restaurants in The Park, 	zomato	https://www.zomato.com/review/32955233	-1	2	This is one of restaurants in The Park, Vishakhapattanam. Found the sea food at this place to be good. Tried tandoori jhinga, crab, fish taw...		{"foodie_color": "ffae4f", "foodie_level_num": 4, "name": "Mukul Moholkar", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/b48/8e13abfbb4bd8625f66f9908ba613b48.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/b48/8e13abfbb4bd8625f66f9908ba613b48.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/users/mukul-moholkar-1025854?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/1025854", "profile_url": "https://www.zomato.com/cs/users/mukul-moholkar-1025854?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Big Foodie"}	f	\N	\N	\N	f	2017-12-30 18:29:19	2018-02-05 11:00:09.917513	2017-12-30 18:29:19	2	0
+7	5	32443041	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/0f4/df97b5b1edeeb7039af9e5dcf25520f4.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Sreejani Sen Majumder	\N	Location and ambience : Probably this is	zomato	https://www.zomato.com/review/32443041	-1	2	Location and ambience : Probably this is the only place in Vizag where you can sit on the beach to have couple of drinks. It's an open air p...		{"foodie_color": "f58552", "foodie_level_num": 10, "name": "Sreejani Sen Majumder", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/0f4/df97b5b1edeeb7039af9e5dcf25520f4.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "zomato_handle": "sreejani", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/0f4/df97b5b1edeeb7039af9e5dcf25520f4.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/sreejani?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/16347181", "profile_url": "https://www.zomato.com/cs/sreejani?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Super Foodie"}	f	\N	\N	\N	f	2017-11-17 10:09:57	2018-02-05 11:00:09.947505	2017-11-17 10:09:57	2	0
+8	5	30768779	TIMELINE	https://b.zmtcdn.com/images/user_avatars/pizza_2x.png?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A	Ananya Sharma	\N	This is probably the best restaurant in 	zomato	https://www.zomato.com/review/30768779	-1	2	This is probably the best restaurant in the city. Its not necessarily a fine dining restaurant but the ambience,food and service is just ama...		{"foodie_color": "ffd35d", "foodie_level_num": 2, "name": "Ananya Sharma", "profile_image": "https://b.zmtcdn.com/images/user_avatars/pizza_2x.png?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A", "profile_img": "https://b.zmtcdn.com/images/user_avatars/pizza_2x.png?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/users/ananya-sharma-42780142?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/42780142", "profile_url": "https://www.zomato.com/cs/users/ananya-sharma-42780142?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Foodie"}	f	\N	\N	\N	f	2017-06-21 11:26:26	2018-02-05 11:00:09.979418	2017-06-21 11:26:26	2	0
+9	5	30731165	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/a20/7167c0001d00b58c770f02c014ffba20.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Varun Joshi	\N	We were a group of 15 people and came to	zomato	https://www.zomato.com/review/30731165	-1	2	We were a group of 15 people and came to Bamboo bay,  location and ambience was great,  however food service was pathetic,  long delays,  st...		{"foodie_color": "ffd35d", "foodie_level_num": 2, "name": "Varun Joshi", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/a20/7167c0001d00b58c770f02c014ffba20.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/a20/7167c0001d00b58c770f02c014ffba20.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/users/varun-joshi-36178743?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/36178743", "profile_url": "https://www.zomato.com/cs/users/varun-joshi-36178743?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Foodie"}	f	\N	\N	\N	f	2017-06-17 19:50:25	2018-02-05 11:00:10.005711	2017-06-17 19:50:25	2	0
+10	5	30010151	TIMELINE	https://b.zmtcdn.com/data/user_profile_pictures/c51/731da6d927cd6cacc5c4f569fb60bc51.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A	Mahesh RajaSagi	\N	This is the only place in Vizag to my kn	zomato	https://www.zomato.com/review/30010151	-1	2	This is the only place in Vizag to my knowledge where one can sit close to beach and have liquor. Food is great. Refreshing experience with ...		{"foodie_color": "f58552", "foodie_level_num": 8, "name": "Mahesh RajaSagi", "profile_image": "https://b.zmtcdn.com/data/user_profile_pictures/c51/731da6d927cd6cacc5c4f569fb60bc51.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "zomato_handle": "maheshrajasagi", "profile_img": "https://b.zmtcdn.com/data/user_profile_pictures/c51/731da6d927cd6cacc5c4f569fb60bc51.jpg?fit=around%7C100%3A100&crop=100%3A100%3B%2A%2C%2A", "profile_page": "https://www.zomato.com/cs/maheshrajasagi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "profile_deeplink": "zomato://u/1401013", "profile_url": "https://www.zomato.com/cs/maheshrajasagi?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1", "foodie_level": "Super Foodie"}	f	\N	\N	\N	f	2017-04-10 18:55:32	2018-02-05 11:00:10.040552	2017-04-10 18:55:32	2	0
+\.
+
+
+--
+-- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('posts_id_seq', 10, true);
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY sessions (id, session_id, data, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sessions_id_seq', 1, false);
+
+
+--
+-- Data for Name: sms_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY sms_stats (id, user_id, campaign_id, channel_id, external_id, reach, success, fail, dnd_fail, absent_subscriber, unknown_subscriber, other, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: sms_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sms_stats_id_seq', 1, false);
+
+
+--
+-- Data for Name: social_channel_followers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY social_channel_followers (id, user_id, social_id, social_channel, followers, name, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: social_channel_followers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('social_channel_followers_id_seq', 1, false);
+
+
+--
+-- Data for Name: twitter_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY twitter_stats (id, user_id, campaign_id, channel_id, tweet_id, reach, retweet_count, favorite_count, inserted_on) FROM stdin;
+\.
+
+
+--
+-- Name: twitter_stats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('twitter_stats_id_seq', 1, false);
+
+
+--
+-- Data for Name: user_listens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY user_listens (id, user_id, label, created_on) FROM stdin;
+1	2	test	\N
+\.
+
+
+--
+-- Name: user_listens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_listens_id_seq', 1, false);
+
+
+--
+-- Data for Name: user_social_channels; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY user_social_channels (id, channel, social_id, social_token, email, name, profile_image, user_id, active, created_at, updated_at, connections, valid_oauth) FROM stdin;
+\.
+
+
+--
+-- Name: user_social_channels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_social_channels_id_seq', 1, false);
+
+
+--
+-- Name: _campaign_post_retweets _campaign_post_retweets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _campaign_post_retweets
+    ADD CONSTRAINT _campaign_post_retweets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: _gupshup_webhook _gupshup_webhook_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _gupshup_webhook
+    ADD CONSTRAINT _gupshup_webhook_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: _mandrill_webhook_message_event _mandrill_webhook_message_event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY _mandrill_webhook_message_event
+    ADD CONSTRAINT _mandrill_webhook_message_event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: alerts alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY alerts
+    ADD CONSTRAINT alerts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_crawler_engines custom_crawler_engines_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY custom_crawler_engines
+    ADD CONSTRAINT custom_crawler_engines_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_crawlers custom_crawlers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY custom_crawlers
+    ADD CONSTRAINT custom_crawlers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_stats email_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY email_stats
+    ADD CONSTRAINT email_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: facebook_stats facebook_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY facebook_stats
+    ADD CONSTRAINT facebook_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: keywords keywords_keyword_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY keywords
+    ADD CONSTRAINT keywords_keyword_key UNIQUE (keyword);
+
+
+--
+-- Name: keywords keywords_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY keywords
+    ADD CONSTRAINT keywords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: linkedin_stats linkedin_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY linkedin_stats
+    ADD CONSTRAINT linkedin_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: listen_details listen_details_listen_id_listen_type_listen_type_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY listen_details
+    ADD CONSTRAINT listen_details_listen_id_listen_type_listen_type_id_key UNIQUE (listen_id, listen_type, listen_type_id);
+
+
+--
+-- Name: listen_details listen_details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY listen_details
+    ADD CONSTRAINT listen_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: messages messages_crawler_id_message_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY messages
+    ADD CONSTRAINT messages_crawler_id_message_id_key UNIQUE (crawler_id, message_id);
+
+
+--
+-- Name: messages messages_keyword_id_message_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY messages
+    ADD CONSTRAINT messages_keyword_id_message_id_key UNIQUE (keyword_id, message_id);
+
+
+--
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: post_relationship post_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY post_relationship
+    ADD CONSTRAINT post_relationship_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: post_reply post_reply_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY post_reply
+    ADD CONSTRAINT post_reply_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posts posts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY posts
+    ADD CONSTRAINT posts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sms_stats sms_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sms_stats
+    ADD CONSTRAINT sms_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_channel_followers social_channel_followers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY social_channel_followers
+    ADD CONSTRAINT social_channel_followers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: twitter_stats twitter_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY twitter_stats
+    ADD CONSTRAINT twitter_stats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_listens user_listens_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_listens
+    ADD CONSTRAINT user_listens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_listens user_listens_user_id_label_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_listens
+    ADD CONSTRAINT user_listens_user_id_label_key UNIQUE (user_id, label);
+
+
+--
+-- Name: user_social_channels user_social_channels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_social_channels
+    ADD CONSTRAINT user_social_channels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ix__campaign_post_retweets_campaign_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__campaign_post_retweets_campaign_channel_id ON _campaign_post_retweets USING btree (campaign_channel_id);
+
+
+--
+-- Name: ix__campaign_post_retweets_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__campaign_post_retweets_campaign_id ON _campaign_post_retweets USING btree (campaign_id);
+
+
+--
+-- Name: ix__gupshup_webhook_cause; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__gupshup_webhook_cause ON _gupshup_webhook USING btree (cause);
+
+
+--
+-- Name: ix__gupshup_webhook_external_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__gupshup_webhook_external_id ON _gupshup_webhook USING btree (external_id);
+
+
+--
+-- Name: ix__gupshup_webhook_status; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__gupshup_webhook_status ON _gupshup_webhook USING btree (status);
+
+
+--
+-- Name: ix__mandrill_webhook_message_event_event; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__mandrill_webhook_message_event_event ON _mandrill_webhook_message_event USING btree (event);
+
+
+--
+-- Name: ix__mandrill_webhook_message_event_post_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix__mandrill_webhook_message_event_post_id ON _mandrill_webhook_message_event USING btree (post_id);
+
+
+--
+-- Name: ix_email_stats_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_email_stats_campaign_id ON email_stats USING btree (campaign_id);
+
+
+--
+-- Name: ix_email_stats_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_email_stats_channel_id ON email_stats USING btree (channel_id);
+
+
+--
+-- Name: ix_email_stats_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_email_stats_user_id ON email_stats USING btree (user_id);
+
+
+--
+-- Name: ix_facebook_stats_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_facebook_stats_campaign_id ON facebook_stats USING btree (campaign_id);
+
+
+--
+-- Name: ix_facebook_stats_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_facebook_stats_channel_id ON facebook_stats USING btree (channel_id);
+
+
+--
+-- Name: ix_facebook_stats_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_facebook_stats_user_id ON facebook_stats USING btree (user_id);
+
+
+--
+-- Name: ix_linkedin_stats_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_linkedin_stats_campaign_id ON linkedin_stats USING btree (campaign_id);
+
+
+--
+-- Name: ix_linkedin_stats_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_linkedin_stats_channel_id ON linkedin_stats USING btree (channel_id);
+
+
+--
+-- Name: ix_linkedin_stats_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_linkedin_stats_user_id ON linkedin_stats USING btree (user_id);
+
+
+--
+-- Name: ix_post_reply_post_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_post_reply_post_id ON post_reply USING btree (post_id);
+
+
+--
+-- Name: ix_posts_message_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_posts_message_id ON posts USING btree (message_id);
+
+
+--
+-- Name: ix_sms_stats_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_sms_stats_campaign_id ON sms_stats USING btree (campaign_id);
+
+
+--
+-- Name: ix_sms_stats_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_sms_stats_channel_id ON sms_stats USING btree (channel_id);
+
+
+--
+-- Name: ix_sms_stats_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_sms_stats_user_id ON sms_stats USING btree (user_id);
+
+
+--
+-- Name: ix_social_channel_followers_social_channel; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_social_channel_followers_social_channel ON social_channel_followers USING btree (social_channel);
+
+
+--
+-- Name: ix_social_channel_followers_social_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_social_channel_followers_social_id ON social_channel_followers USING btree (social_id);
+
+
+--
+-- Name: ix_social_channel_followers_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_social_channel_followers_user_id ON social_channel_followers USING btree (user_id);
+
+
+--
+-- Name: ix_twitter_stats_campaign_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_twitter_stats_campaign_id ON twitter_stats USING btree (campaign_id);
+
+
+--
+-- Name: ix_twitter_stats_channel_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_twitter_stats_channel_id ON twitter_stats USING btree (channel_id);
+
+
+--
+-- Name: ix_twitter_stats_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_twitter_stats_user_id ON twitter_stats USING btree (user_id);
+
+
+--
+-- Name: alerts alerts_listen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY alerts
+    ADD CONSTRAINT alerts_listen_id_fkey FOREIGN KEY (listen_id) REFERENCES user_listens(id);
+
+
+--
+-- Name: listen_details listen_details_listen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY listen_details
+    ADD CONSTRAINT listen_details_listen_id_fkey FOREIGN KEY (listen_id) REFERENCES user_listens(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

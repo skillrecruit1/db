@@ -1,0 +1,372 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'LATIN1';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: articles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE articles (
+    uuid character varying(255) NOT NULL,
+    industry character varying(255),
+    channel character varying(255),
+    article_description text,
+    article_title character varying(255),
+    article_lastupdate character varying(255),
+    article_link text,
+    article_image text,
+    channel_logo character varying(255),
+    hashid character varying(255),
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE articles OWNER TO postgres;
+
+--
+-- Name: channels; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE channels (
+    uuid character varying(255) NOT NULL,
+    industry character varying(255),
+    channel_link text,
+    channel_description text,
+    channel_title character varying(255),
+    channel_logo text,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE channels OWNER TO postgres;
+
+--
+-- Name: images; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE images (
+    uuid character varying(255),
+    id integer NOT NULL,
+    tag character varying(120),
+    image_url text,
+    thumbnail_url text,
+    description character varying(255),
+    status character varying(120)
+);
+
+
+ALTER TABLE images OWNER TO postgres;
+
+--
+-- Name: images_from_squadrun; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE images_from_squadrun (
+    uuid character varying(255) NOT NULL,
+    id integer,
+    tag character varying(120),
+    image_url text,
+    confidence double precision,
+    option character varying(255),
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE images_from_squadrun OWNER TO postgres;
+
+--
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE images_id_seq OWNER TO postgres;
+
+--
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE images_id_seq OWNED BY images.id;
+
+
+--
+-- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
+
+
+--
+-- Data for Name: articles; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY articles (uuid, industry, channel, article_description, article_title, article_lastupdate, article_link, article_image, channel_logo, hashid, updated_at) FROM stdin;
+399b4374-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Add this activewear and fitness gear to your holiday wish list if getting fitwill be one of your New Year's resolutions.	Gear Up for the New Year: Everything You Need to Get in Shape in 2017	2016-11-14 23:26:24	http://www.health.com/fitness/gear-up-new-year	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-487926627.jpg?itok=KEyvgEFC		5fe493da5bf3e71681b752e356c7d3b8	2016-11-15 06:39:14.627168
+399c7956-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	The fitness star shared a powerful before and after photo on Instagram.	Fitness Star Emily Skye Feels &lsquo;Happier, Healthier, Stronger and Fitter&rsquo; After Gaining 28&nbsp;Lbs.	2016-11-14 22:42:50	http://www.health.com/fitness/emily-skye-weight	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1472667558/Em%20beach%203.jpg?itok=zNP9avHu		1ea5b14a1313b812790ad96803f7f57c	2016-11-15 06:39:14.635104
+399d3d8c-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	You dont need to go for a long run or bike ride to get your daily dose of cardio! Watch this video to see fitness expert Lauren Williams bust out an awesome 10-minute, heart-pumping routine you can do anywhere, even while youre at work.She cleverly takes advantage props youll find at your officelike your desk chairto work your entire body like a boss. So go grab your co-workers, a chair, and get your heart rates up with this fun and effective cardio routine.	A 10-Minute Cardio Workout You Can Do At the Office	2016-11-14 18:36:09	http://www.health.com/fitness/office-exercises	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1476721971/10-minute-cardio-routine-to-do-at-work-video.jpg?itok=ZyFk5BsU		4708c9a1b87ca9caa403eaa9bbffacd2	2016-11-15 06:39:14.640119
+399df998-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Craving a better butt?This home workout from Tracy Anderson includes five challenging glute exercises that will lift and tighten your rear.	5 Butt Exercises That Will Reinvent Your Rear	2016-11-10 15:20:00	http://www.health.com/fitness/butt-exercises	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1478557081/tracy-anderson-butt-lift-workout.jpg?itok=0_8Z8dL5		795e269d783511bfd983c6cf67802433	2016-11-15 06:39:14.644931
+399ebf2c-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Its easy to make excuses when it comes to exercise: I dont have a gym membership. Theres no way I have enough time to make a workout worth it. The list goes on and on. But guess what? You dont need a fancy facility, equipment, or a ton of spare time to get an effective total-body workout!	Natalie Jill&amp;#39;s 7-Minute Bodyweight Workout for Core, Glutes, &amp; Arms	2016-11-11 20:12:35	http://www.health.com/fitness/bodyweight-workout-routine	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1476719889/natalie-jill-bodyweight-workout-video.jpg?itok=Vh1d0q2Q		29370e76faf40dd0c2a3f6013c285b48	2016-11-15 06:39:14.649996
+399f36c8-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed		30-Day Total Body Challenge	2014-02-25 16:49:05	http://www.health.com/fitness/total-body-challenge-3	http://cdn-img.health.com/sites/default/files/migration/img/web/2015/12/ho-fifteen-abs-200x150.jpg		12cbdc66a89c6f4b925a5d43a88564ee	2016-11-15 06:39:14.652983
+399f7db8-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	I had assumed wall yoga was just for yogi pros, but I was totally wrong. The straps and harness were just the support I needed to get deeper, more therapeuticstretches.	I Tried Rope Wall Yoga and It Wasn&rsquo;t as Scary as It Sounds	2016-11-10 19:38:04	http://www.health.com/fitness/rope-wall-yoga	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/align-yoga-rope-wall.jpg?itok=PvlsrJYL		cc9a13b4e5d938edab1907ac585b6a38	2016-11-15 06:39:14.654796
+399fc2a0-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	The right walking shoes for every need, from speed walking to a long day at work.	The Best Sneakers For Walking	2015-12-10 05:10:00	http://www.health.com/health/gallery/0,,20680036,00.html	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/new-balance-ww1065.jpg?itok=NhjNyw0V		e8ce06a55c0dc4317556b57be63849b0	2016-11-15 06:39:14.656559
+39a0081e-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Learn how to implement this simple tool and turn your basic workouts into something more challenging.	5 BOSU Ball Exercises for Total-Body Strength	2016-11-09 22:11:20	http://www.health.com/fitness/bosu-ball-exercises-daily-burn	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1478727859/5-Total-Body-BOSU-Ball-Exercises.jpg?itok=g421RkE2		87a2e9b1bba5d67128608f46a70e88c1	2016-11-15 06:39:14.658341
+39a05864-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Researcher says some people don't get the pleasurable effects from activity that others do	Genes May Dictate Your Love&mdash;or Hate&mdash;of Exercise	2016-11-04 00:00:00	http://www.health.com/news/genes-may-dictate-your-love-or-hate-exercise	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1476463303/GettyImages-526727767_0.jpg?itok=g0sKoAKt		aada6ce6433ba9f617ebe203ffb22529	2016-11-15 06:39:14.660391
+39a0996e-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	See what it's like to take part in the world's largest marathon.	This App Lets You Run the NYC Marathon in Virtual Reality	2016-11-08 23:23:33	http://www.health.com/fitness/nyc-marathon-virtual-reality	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/life-vr-nyc-marathon-vr-pov-still.jpg?itok=iifnwmhO		496baf5f5490cfcaad25436052139204	2016-11-15 06:39:14.66206
+39a0dcbc-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	It also explains the science behind carbo-loading, bonking,and that elusiverunner's high.	This Video Shows What Happens to Your Body During a Marathon	2016-11-04 17:56:44	http://www.health.com/fitness/marathon-physical-effects-video	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1478272581/GettyImages-495233978.jpg?itok=KTWCU5Ze		30cbcb4e1e9d27cd0a5c844be2a8bd38	2016-11-15 06:39:14.663781
+39a125be-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	A new study found that runners were 1% slower for every 3.5 ounces added to each sneaker.	Lighter Running Shoes Really Can Make You Faster	2016-11-03 19:44:19	http://www.health.com/fitness/lightweight-running-shoes-faster	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-483965508.jpg?itok=kmCim_Tn		db80c89664d8ed81301e27e1d67787f7	2016-11-15 06:39:14.665676
+39a1670e-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	The company announced it's getting rid of all but two membership options.	ClassPass Just Changed Its Membership Fee Again and People Are Not Happy	2016-11-03 18:29:32	http://www.health.com/fitness/classpass-membership-change	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1474386801/GettyImages-586076719_1.jpg?itok=GmSInE2o		7996f3810c2cf9b13d2f56822f5a49eb	2016-11-15 06:39:14.667324
+39a1a28c-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Say om: These are the perfect gifts for yoga lovers this holiday season.	16 Perfect Yoga Gifts for Women	2015-11-13 14:35:00	http://www.health.com/health/gallery/0,,20961045,00.html	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-459290861.jpg?itok=8ArHYq3_		5481a7eaf1ebbc043bf328b8ddbbdcfc	2016-11-15 06:39:14.668844
+39a1dca2-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Hitting the gym almost daily and still not seeing results? Here's how to tell if you're OD'ingon this healthy habit and working out too muchand what to do instead.	Yes, It&rsquo;s Possible to Exercise Too Much&mdash;Here Are the Signs	2016-11-02 20:14:33	http://www.health.com/fitness/working-out-too-much	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1478104002/GettyImages-490654481.jpg?itok=wL9Zkcoq		d9ecb58a6dba443fbc279d4d4b8a3974	2016-11-15 06:39:14.670331
+39a22d1a-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	You already know aboutHIIT, but should you be addingmoreLISS(low-intensity, steady-state cardio) workouts into your routine?	What&rsquo;s the Difference Between LISS and HIIT Workouts?	2016-07-18 21:16:54	http://www.health.com/fitness/liss-workouts	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1463668621/GettyImages-157321884.jpg?itok=6ROUt6iq		763ab7c04fc3e3907a9a5d0174c3d37c	2016-11-15 06:39:14.672388
+39a27edc-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Soothe period pain with these cramp-crushing exercises.	9 Best Workouts to Do When You Have Your Period	2015-09-21 14:20:00	http://www.health.com/health/gallery/0,,20953267,00.html	http://cdn-img.health.com/sites/default/files/migration/img/web/2015/09/exercise-period-opener-200x150.jpg		c858621106b48f4c5b3793bdf9bc9da4	2016-11-15 06:39:14.674483
+39a2bb4a-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	Try these moves to build upper body strength.	Get Sculpted Shoulders with These 5 Moves	2016-10-28 17:30:09	http://www.health.com/fitness/shoulder-strength-exercises	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1477666952/Shoulder-Exercises-Sculpted-Shoulders-Pin.jpg?itok=o4yJW0jw		76d1536f3aba75a92b77328dcf507da9	2016-11-15 06:39:14.676033
+39a2f65a-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	This 12-minute dance cardio workout will get you to burn calories and build strength in style. In this video, Katie Austin, daughter of famous fitness instructor Denise Austin, fuses traditional exercises like squats or bicep curls with easy-to-follow dance steps.	12-Minute Dance Cardio Workout With Katie Austin	2016-10-24 21:43:29	http://www.health.com/fitness/dance-cardio-workout	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1477074640/12-minute-dance-cardio-workout-with-katie-austin.jpg?itok=AQatn-eP		916e6bad73922e8a93d2566230c2e3e7	2016-11-15 06:39:14.677553
+39a33354-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	These moves will increase your ankle and knee stability and make you more agile for your next off-road run.	The Best Exercises to Prevent Knee and Ankle Injuries	2016-04-20 14:10:49	http://www.health.com/fitness/best-moves-knee-ankle-stability	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1461189633/GettyImages-170093111.jpg?itok=9DUgBMt0		bc0acfabc8f116b9197acbfb48c3a0dc	2016-11-15 06:39:14.679102
+39a37936-aafe-11e6-9157-0050563cc862	wellness	http://www.health.com/fitness/feed	New research found that people who'd never done a HIIT workout before liked it better when they tried it with tunes.	Why You Should Listen to Music When You Do HIIT, According to Science	2016-10-21 22:39:37	http://www.health.com/fitness/hiit-workout-playlist	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1477066189/GettyImages-468994393.jpg?itok=oL-CIS30		2050a5e29ec641637c4bc0d15099cebf	2016-11-15 06:39:14.680896
+25a3092c-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Dont burn the turkeyburn calories with these towel-based fat-melting moves.	6 Simple Exercises You Can Do While Cooking Dinner	2017-12-14 22:31:08	http://www.health.com/fitness/at-home-workout-astrid-swan-kitchen	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-863850854.jpg?itok=BAb8-gJh		c7d29f474eaa10f8ccdd3be404659dce	2017-12-15 11:00:22.636655
+25b5c544-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	The Megaformer class isan hour-long, fat-burning workout.	Meghan Markle Swears This Workout Class Transformed Her Body&mdash;So I Tried It	2017-12-14 17:53:38	http://www.health.com/syndication/meghan-markle-favorite-workout-class-we-tried-it	http://cdn-img.health.com/sites/default/files/styles/200x150/public/field/image/120817-meghan-markle-lead_0.jpg?itok=R7TWHe2v		9963f08d1a9738eb58474f165e5ba3b5	2017-12-15 11:00:22.759468
+25b7781c-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Alohomora your fitness potential.	Every Harry Potter Fan Needs This Hogwarts-Inspired Activewear in Their Life	2017-12-14 17:30:42	http://www.health.com/fitness/black-milk-team-hogwarts	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1513265397/Team%20Hogwarts%20leggings.jpg?itok=s2Hg7WeK		d66262418ad762b5d2e97af6d9551f9d	2017-12-15 11:00:22.770573
+25b8d63a-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	The search engine's annual Year in Search report reveals the most-wanted workout wear of the past year.	The Workout Clothes Everyone Wanted in 2017, According to Google	2017-12-13 22:10:12	http://www.health.com/fitness/popular-workout-clothes-2017-google	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1513194784/most-searched-workout-clothes-google-2017.jpg?itok=K0qpXJ_G		1d39ea5d5d1f2f55d05d55d539a43db3	2017-12-15 11:00:22.779536
+25b9552e-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	The clip has more than 16 million viewsand it's making us cringe.	This Viral Video Shows the Most Bizarre-Looking Leg Cramp We've Ever Seen	2017-08-17 18:48:20	http://www.health.com/fitness/bizarre-leg-cramp-video	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1502983789/GettyImages-511947732.jpg?itok=vSgIz7vv		324770cd5b0356e7466bf45dced74ac0	2017-12-15 11:00:22.782743
+25b9b546-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	The whole incident took about 15 minutes and shefinished with a time of 15 hours, 8 minutes.	Doctor Competing in Ironman Race Saves Fellow Triathlete, Then Finishes Race	2017-08-07 21:07:01	http://www.health.com/syndication/doctor-competing-in-ironman-race-saves-fellow-triathlete-then-finishes-race	http://cdn-img.health.com/sites/default/files/styles/200x150/public/field/image/dela1.jpeg?itok=C43vWIdR		e88142f1e1a10fc4e823d06c14a74e38	2017-12-15 11:00:22.785202
+25ba468c-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	John Hancock Elite Ambassadors Blake Russell and Bill Rodgers offer their running wisdom.	How to Start Running (or Come Back From a Hiatus) Without Getting Hurt, According to Pros	2017-10-11 21:34:07	http://www.health.com/fitness/how-to-start-running	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-553516753_0.jpg?itok=AsPczGS3		f329eae501ee08984bbde5659aefdb2a	2017-12-15 11:00:22.788954
+25bae524-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Yep, it's a real condition in which a gluteal musclestopsfiring correctly. Here's how to avoid it.	Dead Butt Syndrome Is One More Reason You Shouldn&rsquo;t Sit All Day	2017-05-30 22:26:48	http://www.health.com/fitness/dead-butt-syndrome-gluteal-amnesia	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/gettyimages-600693140.jpg?itok=rc1HbbgV		84b0eb6fcfa7b3770a519e0be2d04071	2017-12-15 11:00:22.792992
+25bb4e06-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Exercises that tighten and tone your legs from butt to ankles and everything in between	18 Moves to Tone Your Butt, Thighs, and Legs	2014-09-05 23:15:00	http://www.health.com/health/gallery/0,,20725746,00.html	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1458582888/GettyImages-602924373.jpg?itok=inQQtTKD		0d40c1fb75d3b371eb4575f9fce6e72b	2017-12-15 11:00:22.795667
+25bc10ac-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Try one, or all, of these toningmoves.	6 Exercises to Sculpt Lean, Strong Legs Like Your Favorite Stars at the Grammys	2017-02-13 23:25:19	http://www.health.com/fitness/grammy-inspired-leg-exercises	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/grammy-legs.jpg?itok=70X6CHhu		73f5514eb3a3c75e63a0bcc5c9c3d81f	2017-12-15 11:00:22.800681
+25bc955e-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Tone your legs and core with this quick workout fromLEKfitfounderLauren Kleban.	Busy Philipps Loves This Toning Workout&mdash;And It Only Takes 13 Minutes	2017-12-13 14:52:06	http://www.health.com/fitness/lekfit-leg-core-workout-video	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1503678497/13-minute-leg-core-workout-video.jpg?itok=-Djlto52		6d7d0ac41d27716628b2a242d56cbf60	2017-12-15 11:00:22.804054
+25bd28e8-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Yoga 216's Nicole Katz demonstrates three yoga moves to strengthen the muscles around your spine.	Try These 3 Yoga Moves for a Healthier, Stronger Spine	2017-12-12 21:41:26	http://www.health.com/fitness/yoga-moves-strong-spine-video	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1512054057/yoga-216-3-moves-for-a-healthy-spine-video.jpg?itok=O3B97zDP		f081fc9542ab1271a9545bd9c8664353	2017-12-15 11:00:22.807839
+25bdb97a-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Dont let sitting all day leave you stiff and sore. Steal five minutes to stretch away tightness with these simple yoga poses.	The Best Chair Yoga Moves to Combat Back Pain	2017-04-12 16:35:01	http://www.health.com/fitness/chair-yoga-back-pain	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1491421024/kristin-mcgee-chair-yoga-back-bend.jpg?itok=_tldQp3g		5450ef582723e15129e7ac3b50b938d6	2017-12-15 11:00:22.811537
+25be2f36-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Boxers do it for a reason.	Why Jumping Rope Is a Shockingly Good Workout	2017-07-14 16:03:26	http://www.health.com/syndication/jump-rope-exercise-fitness	http://cdn-img.health.com/sites/default/files/styles/200x150/public/field/image/time-magazine-exercise-fitness-health-bethan-mooney-33.jpg?itok=GL6Q7jl1		a3db487b68e9735574378b5aadb2117b	2017-12-15 11:00:22.814545
+25bec2ca-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	The two-time Olympic gold medalist reveals why she uses this dairy product as a recovery tool.	Here&rsquo;s the Surprising Reason Lindsey Vonn Spreads Cheese on Her Injuries	2017-12-12 18:14:37	http://www.health.com/fitness/lindsey-vonn-cheese-therapy-skiing-injuries	http://cdn-img.health.com/sites/default/files/styles/200x150/public/image/lindsey-vonn_0.jpg?itok=07na65BW		79ba239f630b8990af9b2b6b4d6f545f	2017-12-15 11:00:22.818353
+25bf80ac-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Here's all the motivation you need to crush your next workout.	Kate Hudson Hits the Reformer, Sofia Vergara Nails a Plank, and More Star Fitness Snaps You Missed Last Week	2017-12-11 21:27:16	http://www.health.com/fitness/kate-hudson-nina-dobrev-sofia-vergara-workouts	http://cdn-img.health.com/sites/default/files/styles/200x150/public/styles/main/public/kate-hudson-pilates.jpg?itok=X1uoC6-n		60e05500380a05f0909407c14fcf9da2	2017-12-15 11:00:22.823236
+25c05522-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Take away seasonal stress and find your zen.	5 Yoga Moves to Relieve Holiday Stress	2017-12-11 18:10:42	http://www.health.com/fitness/yoga-moves-holidays	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1512773364/yoga-moves-happier-holiday-mcgee.jpg?itok=C_zKEtQA		b5d6f6f92024884d1ff4c8eab7612a21	2017-12-15 11:00:22.828654
+25c0f860-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Say om: These are the perfect gifts for yoga lovers this holiday season.	13 Perfect Gifts for Your Favorite Yogi	2015-11-13 14:35:00	http://www.health.com/health/gallery/0,,20961045,00.html	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1513011242/91%2BUkA-tjyL._SL1500_.jpg?itok=iMwdIUUj		fca59241af00dfab81b7121f04062b62	2017-12-15 11:00:22.832816
+25c18334-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Straighten up and balance out your body with these moves.	6 Exercises That&rsquo;ll Seriously Improve Your Posture	2017-12-06 18:58:41	http://www.health.com/fitness/improve-posture-exercises	http://cdn-img.health.com/sites/default/files/styles/200x150/public/1481841925/GettyImages-629102359_0.jpg?itok=g4YDIJN3		566981a5b84441168c17a6464686122f	2017-12-15 11:00:22.836368
+25c207a0-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Oxygen uptake is a strongindicator of overall physical fitness.	Women Are Naturally Fitter Than Men, Study Says	2017-12-06 16:47:22	http://www.health.com/syndication/women-fitter-than-men	http://cdn-img.health.com/sites/default/files/styles/200x150/public/field/image/running-jumping-sports-shoes-fitness-health-success-betterment.jpg?itok=vNJdCrjF		dd381ef85bcfa8d24e8d23294fd74009	2017-12-15 11:00:22.839755
+25c32932-e187-11e7-899e-0050563d65b5	wellness	http://www.health.com/fitness/feed	Environment may matter as much as exercise.	Pollution Could Cancel Out the Health Benefits of Walking, a New Study Says	2017-12-06 16:33:41	http://www.health.com/syndication/air-pollution-effects-walking	http://cdn-img.health.com/sites/default/files/styles/200x150/public/field/image/walking-manhattan.jpeg?itok=H0wzON7D		98fe576df1c503998ce04ddc6b5dd045	2017-12-15 11:00:22.847199
+\.
+
+
+--
+-- Data for Name: channels; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY channels (uuid, industry, channel_link, channel_description, channel_title, channel_logo, updated_at) FROM stdin;
+72e8b2ca-aafd-11e6-afda-0050563cc862	wellness	http://www.health.com/fitness/feed				2016-11-15 06:33:41.270278
+22fe3ee6-aafe-11e6-bb59-0050563cc862	wellness	http://www.health.com/fitness/feed				2016-11-15 06:38:36.688349
+a79d6974-aafe-11e6-b9d2-0050563cc862	wellness	http://www.health.com/fitness/feed				2016-11-15 06:42:19.190659
+\.
+
+
+--
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY images (uuid, id, tag, image_url, thumbnail_url, description, status) FROM stdin;
+65f1fd28-efae-11e7-9caa-0050563d65b5	1	tata-motors	https://farm5.staticflickr.com/4693/27378360929_8a4956430b_b.jpg	https://farm5.staticflickr.com/4693/27378360929_8a4956430b_t.jpg	Tata Super Ace	NEW
+66035172-efae-11e7-9caa-0050563d65b5	2	tata-motors	https://farm5.staticflickr.com/4571/37706999005_840f99b55c_b.jpg	https://farm5.staticflickr.com/4571/37706999005_840f99b55c_t.jpg	Fully comprehensive	NEW
+66041e4a-efae-11e7-9caa-0050563d65b5	3	tata-motors	https://farm5.staticflickr.com/4515/38326664706_5b0a1ace61_b.jpg	https://farm5.staticflickr.com/4515/38326664706_5b0a1ace61_t.jpg	Tata Nexon AMT	NEW
+6604aebe-efae-11e7-9caa-0050563d65b5	4	tata-motors	https://farm5.staticflickr.com/4449/37488000431_0a3759e134_b.jpg	https://farm5.staticflickr.com/4449/37488000431_0a3759e134_t.jpg	Reflected morning sunshine turned beige dashboard to yellow	NEW
+660515fc-efae-11e7-9caa-0050563d65b5	5	tata-motors	https://farm5.staticflickr.com/4460/37301362116_f75a898aa6_b.jpg	https://farm5.staticflickr.com/4460/37301362116_f75a898aa6_t.jpg	Tata Not to Phase Out Nano Soon From Its Portfolio	NEW
+660579fc-efae-11e7-9caa-0050563d65b5	6	tata-motors	https://farm5.staticflickr.com/4341/37173134056_f94e8453b6_b.jpg	https://farm5.staticflickr.com/4341/37173134056_f94e8453b6_t.jpg	Tata Nexon	NEW
+6605ef90-efae-11e7-9caa-0050563d65b5	7	tata-motors	https://farm5.staticflickr.com/4359/36486969053_be2fbef8bb_b.jpg	https://farm5.staticflickr.com/4359/36486969053_be2fbef8bb_t.jpg	Best Tata Cars in India 2017-18 | Tata Cars	NEW
+6606b1d2-efae-11e7-9caa-0050563d65b5	8	tata-motors	https://farm5.staticflickr.com/4325/36063984911_4d8b129505_b.jpg	https://farm5.staticflickr.com/4325/36063984911_4d8b129505_t.jpg	Head out on the highway #ExploreWithNexon #Cars #Motoring #SUV @TataMotors	NEW
+6607bb54-efae-11e7-9caa-0050563d65b5	9	tata-motors	https://farm5.staticflickr.com/4292/36030581762_d9370317db_b.jpg	https://farm5.staticflickr.com/4292/36030581762_d9370317db_t.jpg	Push n' Play? #TataNexon #ExploreWithNexon #cars #motoring #SUV #crossovers #Nexon @TataMotors	NEW
+6608b9d2-efae-11e7-9caa-0050563d65b5	10	tata-motors	https://farm5.staticflickr.com/4315/35827204832_a6bbc0dfbe_b.jpg	https://farm5.staticflickr.com/4315/35827204832_a6bbc0dfbe_t.jpg	Tata Nexon	NEW
+66098a92-efae-11e7-9caa-0050563d65b5	11	tata-motors	https://farm5.staticflickr.com/4292/35064326513_5ae4d08579_b.jpg	https://farm5.staticflickr.com/4292/35064326513_5ae4d08579_t.jpg	Tata Safari Dicor Discontinued	NEW
+660afc06-efae-11e7-9caa-0050563d65b5	12	tata-motors	https://farm5.staticflickr.com/4149/35708769045_edabd61fca_b.jpg	https://farm5.staticflickr.com/4149/35708769045_edabd61fca_t.jpg	Tata Tiago	NEW
+660bb92a-efae-11e7-9caa-0050563d65b5	13	tata-motors	https://farm5.staticflickr.com/4223/34795900693_2c75ca12ff_b.jpg	https://farm5.staticflickr.com/4223/34795900693_2c75ca12ff_t.jpg	Tata Motors-Volkswagen Partnership	NEW
+660c7572-efae-11e7-9caa-0050563d65b5	14	tata-motors	https://farm5.staticflickr.com/4213/35515665805_90f6fc55bb_b.jpg	https://farm5.staticflickr.com/4213/35515665805_90f6fc55bb_t.jpg	Ishani won 1st Prize in Drawing Competition organized by #Oriflame #RadioMirchi and #TataMotors	NEW
+660d09f6-efae-11e7-9caa-0050563d65b5	15	tata-motors	https://farm5.staticflickr.com/4229/35129419510_6c00b00fd6_b.jpg	https://farm5.staticflickr.com/4229/35129419510_6c00b00fd6_t.jpg	Ishani won 1st Prize in Drawing Competition organized by #Oriflame #RadioMirchi and #TataMotors	NEW
+660dbae0-efae-11e7-9caa-0050563d65b5	16	tata-motors	https://farm5.staticflickr.com/4176/33890160084_b3bc7e893e_b.jpg	https://farm5.staticflickr.com/4176/33890160084_b3bc7e893e_t.jpg	Tata Cars in India » Prices, Models, Images, Reviews	NEW
+660e8fa6-efae-11e7-9caa-0050563d65b5	17	tata-motors	https://farm5.staticflickr.com/4181/34185259560_5277065ae4_b.jpg	https://farm5.staticflickr.com/4181/34185259560_5277065ae4_t.jpg	Skoda Comeback Plan with Partnership of Tata Motors	NEW
+660f53aa-efae-11e7-9caa-0050563d65b5	18	tata-motors	https://farm5.staticflickr.com/4169/34368008522_7e2361cf36_b.jpg	https://farm5.staticflickr.com/4169/34368008522_7e2361cf36_t.jpg	TATA MOTORS T1 Prima Truck Racing Championship	NEW
+66100c28-efae-11e7-9caa-0050563d65b5	19	tata-motors	https://farm5.staticflickr.com/4165/33685934694_e6db91ecbe_b.jpg	https://farm5.staticflickr.com/4165/33685934694_e6db91ecbe_t.jpg	TATA MOTORS T1 Prima Truck Racing Championship	NEW
+66113800-efae-11e7-9caa-0050563d65b5	20	tata-motors	https://farm5.staticflickr.com/4190/34528628575_337ba57b66_b.jpg	https://farm5.staticflickr.com/4190/34528628575_337ba57b66_t.jpg	TATA MOTORS T1 Prima Truck Racing Championship	NEW
+6611fc90-efae-11e7-9caa-0050563d65b5	21	tata-motors	https://farm3.staticflickr.com/2828/34333849865_b9c83630cf_b.jpg	https://farm3.staticflickr.com/2828/34333849865_b9c83630cf_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+6612b0d6-efae-11e7-9caa-0050563d65b5	22	tata-motors	https://farm3.staticflickr.com/2889/33523598323_437897893f_b.jpg	https://farm3.staticflickr.com/2889/33523598323_437897893f_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+6613888a-efae-11e7-9caa-0050563d65b5	23	tata-motors	https://farm5.staticflickr.com/4188/33492311454_b60aa37d2c_b.jpg	https://farm5.staticflickr.com/4188/33492311454_b60aa37d2c_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+66142cfe-efae-11e7-9caa-0050563d65b5	24	tata-motors	https://farm3.staticflickr.com/2889/33523545313_c3ed1ddcee_b.jpg	https://farm3.staticflickr.com/2889/33523545313_c3ed1ddcee_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+6614ada0-efae-11e7-9caa-0050563d65b5	25	tata-motors	https://farm5.staticflickr.com/4165/34175719702_dab4c829f3_b.jpg	https://farm5.staticflickr.com/4165/34175719702_dab4c829f3_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+66152b90-efae-11e7-9caa-0050563d65b5	26	tata-motors	https://farm5.staticflickr.com/4168/33949928050_0d0f4c58c5_b.jpg	https://farm5.staticflickr.com/4168/33949928050_0d0f4c58c5_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661590bc-efae-11e7-9caa-0050563d65b5	27	tata-motors	https://farm3.staticflickr.com/2884/34202948631_14ecc4ab13_b.jpg	https://farm3.staticflickr.com/2884/34202948631_14ecc4ab13_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+6616b08c-efae-11e7-9caa-0050563d65b5	28	tata-motors	https://farm5.staticflickr.com/4163/34202830661_20c95a249f_b.jpg	https://farm5.staticflickr.com/4163/34202830661_20c95a249f_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661925b0-efae-11e7-9caa-0050563d65b5	29	tata-motors	https://farm5.staticflickr.com/4182/33492084484_b7c7dfe578_b.jpg	https://farm5.staticflickr.com/4182/33492084484_b7c7dfe578_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+6619ca88-efae-11e7-9caa-0050563d65b5	30	tata-motors	https://farm5.staticflickr.com/4178/34292704236_e1c757eeac_b.jpg	https://farm5.staticflickr.com/4178/34292704236_e1c757eeac_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661a460c-efae-11e7-9caa-0050563d65b5	31	tata-motors	https://farm3.staticflickr.com/2879/33492051524_4d1de1f0aa_b.jpg	https://farm3.staticflickr.com/2879/33492051524_4d1de1f0aa_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661ad180-efae-11e7-9caa-0050563d65b5	32	tata-motors	https://farm3.staticflickr.com/2890/34202745431_d4d4e6886a_b.jpg	https://farm3.staticflickr.com/2890/34202745431_d4d4e6886a_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661b4796-efae-11e7-9caa-0050563d65b5	33	tata-motors	https://farm5.staticflickr.com/4177/33523195893_b2d6896493_b.jpg	https://farm5.staticflickr.com/4177/33523195893_b2d6896493_t.jpg	Chhitkul village, in Sangla Valley, Kinnaur	NEW
+661c1a72-efae-11e7-9caa-0050563d65b5	34	tata-motors	https://farm3.staticflickr.com/2883/34333444215_1638aac7fc_b.jpg	https://farm3.staticflickr.com/2883/34333444215_1638aac7fc_t.jpg	Iron bridge at Raksham village in Sangla Valley, Kinnaur	NEW
+661c9a1a-efae-11e7-9caa-0050563d65b5	35	tata-motors	https://farm3.staticflickr.com/2819/34333331595_773db464d6_b.jpg	https://farm3.staticflickr.com/2819/34333331595_773db464d6_t.jpg	Travelling on the world's most treacherous road!	NEW
+661d0edc-efae-11e7-9caa-0050563d65b5	36	tata-motors	https://farm3.staticflickr.com/2809/33522968243_3502846e5b_b.jpg	https://farm3.staticflickr.com/2809/33522968243_3502846e5b_t.jpg	Travelling on the world's most treacherous road!	NEW
+661d80ba-efae-11e7-9caa-0050563d65b5	37	tata-motors	https://farm3.staticflickr.com/2806/33491589684_de3af514f1_b.jpg	https://farm3.staticflickr.com/2806/33491589684_de3af514f1_t.jpg	Kinnaur-Apr-17-0184	NEW
+661ddf4c-efae-11e7-9caa-0050563d65b5	38	tata-motors	https://farm3.staticflickr.com/2852/34333081035_146c8c18ee_b.jpg	https://farm3.staticflickr.com/2852/34333081035_146c8c18ee_t.jpg	Road From Nako to Khab	NEW
+661e360e-efae-11e7-9caa-0050563d65b5	39	tata-motors	https://farm3.staticflickr.com/2841/34202181761_0808914e8c_b.jpg	https://farm3.staticflickr.com/2841/34202181761_0808914e8c_t.jpg	Nako Helipad	NEW
+661e95fe-efae-11e7-9caa-0050563d65b5	40	tata-motors	https://farm3.staticflickr.com/2851/34292087456_3207ced280_b.jpg	https://farm3.staticflickr.com/2851/34292087456_3207ced280_t.jpg	Nako Helipad	NEW
+661eea68-efae-11e7-9caa-0050563d65b5	41	tata-motors	https://farm3.staticflickr.com/2840/33491422384_3dfe9c2897_b.jpg	https://farm3.staticflickr.com/2840/33491422384_3dfe9c2897_t.jpg	Malling Nullah	NEW
+661f4f3a-efae-11e7-9caa-0050563d65b5	42	tata-motors	https://farm5.staticflickr.com/4158/34202006991_094519813b_b.jpg	https://farm5.staticflickr.com/4158/34202006991_094519813b_t.jpg	Malling Nullah	NEW
+661fe22e-efae-11e7-9caa-0050563d65b5	43	tata-motors	https://farm5.staticflickr.com/4165/34291028106_060aa18043_b.jpg	https://farm5.staticflickr.com/4165/34291028106_060aa18043_t.jpg	Kasang Nallah, Kinnaur.	NEW
+6620719e-efae-11e7-9caa-0050563d65b5	44	tata-motors	https://farm5.staticflickr.com/4178/33947998750_7a079478a2_b.jpg	https://farm5.staticflickr.com/4178/33947998750_7a079478a2_t.jpg	View of the Kinnaur Kailash range from Reckong	NEW
+6621023a-efae-11e7-9caa-0050563d65b5	45	tata-motors	https://farm3.staticflickr.com/2831/34042364681_dc6d4685d1_b.jpg	https://farm3.staticflickr.com/2831/34042364681_dc6d4685d1_t.jpg	Tata Motors	NEW
+6621758a-efae-11e7-9caa-0050563d65b5	46	tata-motors	https://farm6.staticflickr.com/5828/31226888625_88e824dd22_b.jpg	https://farm6.staticflickr.com/5828/31226888625_88e824dd22_t.jpg	ZEST _ CHAI PE CHARCHA _BANNER  ARTWORK	NEW
+6621e6d2-efae-11e7-9caa-0050563d65b5	47	tata-motors	https://farm6.staticflickr.com/5326/30364732916_e2e563d98f_b.jpg	https://farm6.staticflickr.com/5326/30364732916_e2e563d98f_t.jpg	New Ride - 2016 Tata Storme	NEW
+66226774-efae-11e7-9caa-0050563d65b5	48	tata-motors	https://farm9.staticflickr.com/8286/29591907181_d21d72aac8_b.jpg	https://farm9.staticflickr.com/8286/29591907181_d21d72aac8_t.jpg	FESTIVE THEME GATE FOR RD MOTORS	NEW
+6622e42e-efae-11e7-9caa-0050563d65b5	49	tata-motors	https://farm9.staticflickr.com/8395/29274266956_d0bb151575_b.jpg	https://farm9.staticflickr.com/8395/29274266956_d0bb151575_t.jpg	ARTWORK FOR RD MOTORS	NEW
+66234608-efae-11e7-9caa-0050563d65b5	50	tata-motors	https://farm2.staticflickr.com/1606/26492377092_9484c3f82c_b.jpg	https://farm2.staticflickr.com/1606/26492377092_9484c3f82c_t.jpg	By the Sea	NEW
+6623a8b4-efae-11e7-9caa-0050563d65b5	51	tata-motors	https://farm2.staticflickr.com/1594/25820676091_53eeac9c61_b.jpg	https://farm2.staticflickr.com/1594/25820676091_53eeac9c61_t.jpg	Land Rover Series II (1958 to 1961)	NEW
+\.
+
+
+--
+-- Data for Name: images_from_squadrun; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY images_from_squadrun (uuid, id, tag, image_url, confidence, option, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('images_id_seq', 51, true);
+
+
+--
+-- Name: articles articles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT articles_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: channels channels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY channels
+    ADD CONSTRAINT channels_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: images_from_squadrun images_from_squadrun_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY images_from_squadrun
+    ADD CONSTRAINT images_from_squadrun_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: images images_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ix_articles_industry; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_articles_industry ON articles USING btree (industry);
+
+
+--
+-- Name: ix_channels_industry; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_channels_industry ON channels USING btree (industry);
+
+
+--
+-- Name: ix_images_description; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_images_description ON images USING btree (description);
+
+
+--
+-- Name: ix_images_from_squadrun_confidence; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_images_from_squadrun_confidence ON images_from_squadrun USING btree (confidence);
+
+
+--
+-- Name: ix_images_from_squadrun_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_images_from_squadrun_id ON images_from_squadrun USING btree (id);
+
+
+--
+-- Name: ix_images_from_squadrun_tag; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_images_from_squadrun_tag ON images_from_squadrun USING btree (tag);
+
+
+--
+-- Name: ix_images_status; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_images_status ON images USING btree (status);
+
+
+--
+-- Name: ix_images_tag; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_images_tag ON images USING btree (tag);
+
+
+--
+-- Name: images_from_squadrun images_from_squadrun_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY images_from_squadrun
+    ADD CONSTRAINT images_from_squadrun_id_fkey FOREIGN KEY (id) REFERENCES images(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
